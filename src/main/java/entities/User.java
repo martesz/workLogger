@@ -1,10 +1,10 @@
 package entities;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -13,16 +13,16 @@ public class User {
 	public enum Level {
 		EMPLOYEE, PROJECT_LEADER, ADMIN
 	}
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
 
 	private String name;
+	
+	@Id
 	private String googleId;
 	
 	@Enumerated(EnumType.STRING)
 	private Level level;
+	
+	private List<WorkingHour> workingHours;
 
 	public String getName() {
 		return name;
@@ -40,8 +40,20 @@ public class User {
 		this.googleId = googleId;
 	}
 
-	public long getId() {
-		return id;
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
+
+	public List<WorkingHour> getWorkingHours() {
+		return workingHours;
+	}
+
+	public void setWorkingHours(List<WorkingHour> workingHours) {
+		this.workingHours = workingHours;
 	}
 
 }

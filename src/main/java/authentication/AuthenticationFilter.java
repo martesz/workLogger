@@ -66,7 +66,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 			@Override
 			public String getAuthenticationScheme() {
-				return null;
+				return googleToken;
 			}
 		});
 

@@ -3,8 +3,6 @@ package authentication;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 
@@ -21,7 +19,7 @@ import entities.User;
 public class GoogleLogin {
 	public static final String ISSUER = "https://accounts.google.com";
 
-	public static final String SERVICE_CLIENT_ID = "184243885869-enlbqgos6p3t9fqujkh89squibv04ncu.apps.googleusercontent.com";
+	public static final String SERVICE_CLIENT_ID = "1390153392979-9gaqsfen0f7kdqc3kh07b4uvm2fn8loe.apps.googleusercontent.com";
 
 	public User authenticateAndroid(String googleIdToken) {
         GoogleIdTokenVerifier verifier = createVerifier(SERVICE_CLIENT_ID, ISSUER);
