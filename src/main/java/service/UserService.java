@@ -6,22 +6,39 @@ import javax.ejb.EJB;
 
 import database.UserDao;
 import entities.User;
+import entities.User.Level;
 import entities.WorkingHour;
 
 public class UserService {
 
 	@EJB
 	UserDao userDao;
-	
+
 	public User getUserByGoogleId(String googleId) {
 		return userDao.getUserByGoogleId(googleId);
 	}
-	
-	public void registerNewUser(User user) {
-		userDao.insertNewUser(user);
+
+	public User registerOrLoginUser(User user) {
+		User existing = userDao.getUserByGoogleId(user.getGoogleId());
+		if (existing == null) {
+			user.setLevel(Level.EMPLOYEE);
+			userDao.insert(user);
+			return user;
+		} else {
+			return existing;
+		}
 	}
-	
+
 	public List<WorkingHour> getWorkingHours(String googleId) {
 		return userDao.getWorkingHours(googleId);
+	}
+
+	public Level getLevelOfUser(String googleId) {
+		User user = userDao.getUserByGoogleId(googleId);
+		return user.getLevel();
+	}
+
+	public void updateLevel(String googleId, Level level) {
+		userDao.updateLevel(googleId, level);
 	}
 }
