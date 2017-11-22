@@ -3,16 +3,18 @@ package authentication;
 import java.security.Principal;
 
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 import entities.User;
 
 public class UserSecurityContext implements SecurityContext {
 
 	private User user;
+	private UriInfo uriInfo;
 
-	public UserSecurityContext(User user) {
-		super();
+	public UserSecurityContext(User user, UriInfo uriInfo) {
 		this.user = user;
+		this.uriInfo = uriInfo;
 	}
 
 	@Override
@@ -23,10 +25,8 @@ public class UserSecurityContext implements SecurityContext {
 	@Override
 	public Principal getUserPrincipal() {
 		return new Principal() {
-
 			@Override
 			public String getName() {
-				// TODO Auto-generated method stub
 				return user.getName();
 			}
 		};
@@ -34,7 +34,7 @@ public class UserSecurityContext implements SecurityContext {
 
 	@Override
 	public boolean isSecure() {
-		return false;
+		return uriInfo.getAbsolutePath().toString().startsWith("https");
 	}
 
 	@Override
