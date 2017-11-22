@@ -11,6 +11,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -28,15 +29,13 @@ public class WorkingHourApi {
 	@EJB
 	WorkingHourService hourService;
 
-	@Context
-	private UserSecurityContext securityContext;
-
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Secured
-	public Response addWorkingHour(WorkingHour workingHour) {
-		User user = securityContext.getUser();
+	public Response addWorkingHour(@Context ContainerRequestContext securityContext, WorkingHour workingHour) {
+		UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
+		User user = userSecurityContext.getUser();
 		workingHour.setUser(user);
 		hourService.addWorkingHour(workingHour);
 		return Response.ok("Working hour added to user: " + user.getName() + "with start: " + workingHour.getStarting()
@@ -47,8 +46,9 @@ public class WorkingHourApi {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateWorkingHour(WorkingHour workingHour) {
-		User user = securityContext.getUser();
+	public Response updateWorkingHour(@Context ContainerRequestContext securityContext, WorkingHour workingHour) {
+		UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
+		User user = userSecurityContext.getUser();
 		hourService.updateWorkingHour(workingHour);
 		return Response.ok("Working hour updated to user: " + user.getName() + "with start: " + workingHour.getStarting()
 		+ " with duration: " + workingHour.getDuration()).build();
@@ -58,8 +58,9 @@ public class WorkingHourApi {
 	@DELETE
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response removeWorkingHour(WorkingHour workingHour) {
-		User user = securityContext.getUser();
+	public Response removeWorkingHour(@Context ContainerRequestContext securityContext, WorkingHour workingHour) {
+		UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
+		User user = userSecurityContext.getUser();
 		hourService.removeWorkingHour(workingHour);
 		return Response.ok("Working hour removed to user: " + user.getName() + "with start: " + workingHour.getStarting()
 		+ " with duration: " + workingHour.getDuration()).build();
@@ -68,8 +69,9 @@ public class WorkingHourApi {
 	@GET
 	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getWorkingHoursByUser() {
-		User user = securityContext.getUser();
+	public Response getWorkingHoursByUser(@Context ContainerRequestContext securityContext) {
+		UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
+		User user = userSecurityContext.getUser();
 		List<WorkingHour> workingHours = user.getWorkingHours();
 		return Response.ok(workingHours).build();
 	}
