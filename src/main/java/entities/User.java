@@ -31,7 +31,7 @@ public class User implements Serializable {
 	private Level level;
 
 	@OneToMany
-	@JsonManagedReference
+	@JsonManagedReference(value = "WorkingHours")
 	private List<WorkingHour> workingHours;
 	
 	public enum Level {

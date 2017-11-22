@@ -29,11 +29,11 @@ public class Issue implements Serializable {
 	private String description;
 	
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference(value = "Project")
 	private Project project;
 	
 	@OneToMany
-	@JsonManagedReference
+	@JsonManagedReference(value = "WorkingHours")
 	private List<WorkingHour> workingHours;
 	
 	private static final long serialVersionUID = 1L;

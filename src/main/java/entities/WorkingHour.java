@@ -30,11 +30,11 @@ public class WorkingHour implements Serializable {
 	private long duration;
 	
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference(value = "User")
 	private User user;
 	
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference(value = "Issue")
 	private Issue issue;
 
 	private static final long serialVersionUID = 1L;

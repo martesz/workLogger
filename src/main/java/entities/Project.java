@@ -28,7 +28,7 @@ public class Project implements Serializable {
 	private String description;
 	
 	@OneToMany
-	@JsonManagedReference
+	@JsonManagedReference(value = "Issues")
 	private List<Issue> issues;
 
 	public Project() {
