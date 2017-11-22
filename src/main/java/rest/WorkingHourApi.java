@@ -1,5 +1,6 @@
 package rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -72,7 +73,10 @@ public class WorkingHourApi {
 	public Response getWorkingHoursByUser(@Context ContainerRequestContext securityContext) {
 		UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
 		User user = userSecurityContext.getUser();
-		List<WorkingHour> workingHours = user.getWorkingHours();
+		List<WorkingHour> workingHours = hourService.getWorkingHours(user);
+		if (workingHours == null) {
+			workingHours = new ArrayList<>();
+		}
 		return Response.ok(workingHours).build();
 	}
 }

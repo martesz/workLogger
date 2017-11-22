@@ -1,9 +1,13 @@
 package database;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
+import entities.User;
 import entities.WorkingHour;
 
 @Stateless
@@ -22,5 +26,12 @@ public class WorkingHourDao {
 
 	public void removeWorkingHour(WorkingHour workingHour) {
 		em.remove(workingHour);
+	}
+
+	public List<WorkingHour> getWorkingHours(User user) {
+		TypedQuery<WorkingHour> query = em.createQuery("SELECT w FROM WorkingHour w WHERE w.user =:user", WorkingHour.class);
+		query.setParameter("user", user);
+		List<WorkingHour> resultList = query.getResultList();
+		return resultList;
 	}
 }

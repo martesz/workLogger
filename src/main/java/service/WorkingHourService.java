@@ -1,9 +1,12 @@
 package service;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import database.WorkingHourDao;
+import entities.User;
 import entities.WorkingHour;
 
 @Stateless
@@ -22,5 +25,9 @@ public class WorkingHourService {
 
 	public void removeWorkingHour(WorkingHour workingHour) {
 		hourDao.removeWorkingHour(workingHour);
+	}
+
+	public List<WorkingHour> getWorkingHours(User user) {
+		return hourDao.getWorkingHours(user);
 	}
 }
