@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import entities.User;
-import entities.User.Level;
 import entities.WorkingHour;
 
 @Stateless
@@ -30,9 +29,9 @@ public class UserDao {
 		return user.getWorkingHours();
 	}
 
-	public void updateLevel(String googleId, Level level) {
+	public void updateLevel(String googleId, String level) {
 		User user = em.find(User.class, googleId);
-		user.setLevel(level);
+		user.setLevelFromString(level);
 	}
 
 }

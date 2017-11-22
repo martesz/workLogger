@@ -3,12 +3,14 @@ package service;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 
 import database.UserDao;
 import entities.User;
 import entities.User.Level;
 import entities.WorkingHour;
 
+@Stateless
 public class UserService {
 
 	@EJB
@@ -38,7 +40,7 @@ public class UserService {
 		return user.getLevel();
 	}
 
-	public void updateLevel(String googleId, Level level) {
+	public void updateLevel(String googleId, String level) {
 		userDao.updateLevel(googleId, level);
 	}
 }
