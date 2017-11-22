@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Entity implementation class for Entity: Project
+ * Entity implementation class for Entity: User
  *
  */
 @Entity
