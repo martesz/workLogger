@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  * Entity implementation class for Entity: WorkingHour
  *
@@ -28,9 +30,11 @@ public class WorkingHour implements Serializable {
 	private long duration;
 	
 	@ManyToOne
+	@JsonBackReference
 	private User user;
 	
 	@ManyToOne
+	@JsonBackReference
 	private Issue issue;
 
 	private static final long serialVersionUID = 1L;

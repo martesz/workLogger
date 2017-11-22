@@ -7,7 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * Entity implementation class for Entity: User
@@ -27,6 +30,8 @@ public class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Level level;
 
+	@OneToMany
+	@JsonManagedReference
 	private List<WorkingHour> workingHours;
 	
 	public enum Level {
