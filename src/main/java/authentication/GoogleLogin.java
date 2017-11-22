@@ -19,7 +19,7 @@ import entities.User;
 public class GoogleLogin {
 	public static final String ISSUER = "https://accounts.google.com";
 
-	public static final String SERVICE_CLIENT_ID = "1390153392979-9gaqsfen0f7kdqc3kh07b4uvm2fn8loe.apps.googleusercontent.com";
+	public static final String SERVICE_CLIENT_ID = "390153392979-9gaqsfen0f7kdqc3kh07b4uvm2fn8loe.apps.googleusercontent.com";
 
 	public User authenticateAndroid(String googleIdToken) {
         GoogleIdTokenVerifier verifier = createVerifier(SERVICE_CLIENT_ID, ISSUER);
