@@ -1,15 +1,11 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * Entity implementation class for Entity: Project
@@ -26,10 +22,6 @@ public class Project implements Serializable {
 
 	private String name;
 	private String description;
-	
-	@OneToMany
-	@JsonManagedReference(value = "Issues")
-	private List<Issue> issues;
 
 	public Project() {
 		super();
@@ -53,14 +45,6 @@ public class Project implements Serializable {
 
 	public long getId() {
 		return id;
-	}
-
-	public List<Issue> getIssues() {
-		return issues;
-	}
-
-	public void setIssues(List<Issue> issues) {
-		this.issues = issues;
 	}
 
 	

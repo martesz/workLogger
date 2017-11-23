@@ -1,14 +1,11 @@
 package service;
 
-import java.util.List;
-
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import database.UserDao;
 import entities.User;
 import entities.User.Level;
-import entities.WorkingHour;
 
 @Stateless
 public class UserService {
@@ -29,10 +26,6 @@ public class UserService {
 		} else {
 			return existing;
 		}
-	}
-
-	public List<WorkingHour> getWorkingHours(String googleId) {
-		return userDao.getWorkingHours(googleId);
 	}
 
 	public Level getLevelOfUser(String googleId) {

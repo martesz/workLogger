@@ -1,17 +1,11 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * Entity implementation class for Entity: Issue
@@ -27,14 +21,7 @@ public class Issue implements Serializable {
 
 	private String name;
 	private String description;
-	
-	@ManyToOne
-	@JsonBackReference(value = "Project")
 	private Project project;
-	
-	@OneToMany
-	@JsonManagedReference(value = "WorkingHours")
-	private List<WorkingHour> workingHours;
 	
 	private static final long serialVersionUID = 1L;
 

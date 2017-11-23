@@ -1,13 +1,10 @@
 package database;
 
-import java.util.List;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import entities.User;
-import entities.WorkingHour;
 
 @Stateless
 public class UserDao {
@@ -22,11 +19,6 @@ public class UserDao {
 
 	public void insert(User user) {
 			em.persist(user);
-	}
-
-	public List<WorkingHour> getWorkingHours(String googleId) {
-		User user = em.find(User.class, googleId);
-		return user.getWorkingHours();
 	}
 
 	public void updateLevel(String googleId, String level) {
