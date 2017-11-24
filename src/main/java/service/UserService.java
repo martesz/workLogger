@@ -4,11 +4,13 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import database.UserDao;
+import entities.DebugLogger;
 import entities.User;
 import entities.User.Level;
 
 @Stateless
 public class UserService {
+	public static final DebugLogger logger = new DebugLogger(UserService.class.getName());
 
 	@EJB
 	UserDao userDao;
@@ -21,9 +23,11 @@ public class UserService {
 		User existing = userDao.getUserByGoogleId(user.getGoogleId());
 		if (existing == null) {
 			user.setLevel(Level.EMPLOYEE);
+			logger.log("Adding new user to database: " + user);
 			userDao.insert(user);
 			return user;
 		} else {
+			logger.log("User already existed, returning: " + existing);
 			return existing;
 		}
 	}

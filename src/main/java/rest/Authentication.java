@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import authentication.Secured;
 import authentication.UserSecurityContext;
+import entities.DebugLogger;
 import entities.User;
 import entities.User.Level;
 import service.UserService;
@@ -22,6 +23,8 @@ import service.UserService;
 @Stateless
 @Path("/auth")
 public class Authentication {
+	public static final DebugLogger logger = new DebugLogger(Authentication.class.getName());
+	
 	@EJB
 	private UserService userService;
 
@@ -46,8 +49,10 @@ public class Authentication {
 		Level levelOfIssuer = userService.getLevelOfUser(issuer.getGoogleId());
 		if (levelOfIssuer == Level.ADMIN) {
 			userService.updateLevel(googleId, level);
+			logger.log("User with googleId " + googleId + " updated to level " + level + " by issuer " + issuer);
 			return Response.ok("User level updated to " + level).build();
 		} else {
+			logger.log("User with googleId " + googleId + " cannot be updated to level " + level + ", because issuer level is not admin: " + issuer);
 			return Response.ok("User level not updated, needs admin level").build();
 		}
 	}

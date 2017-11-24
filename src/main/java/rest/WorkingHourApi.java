@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 
 import authentication.Secured;
 import authentication.UserSecurityContext;
+import entities.DebugLogger;
 import entities.User;
 import entities.WorkingHour;
 import service.WorkingHourService;
@@ -26,6 +27,7 @@ import service.WorkingHourService;
 @Path("/hour")
 @Stateless
 public class WorkingHourApi {
+	public static final DebugLogger logger = new DebugLogger(WorkingHour.class.getName());
 
 	@EJB
 	WorkingHourService hourService;
@@ -38,6 +40,7 @@ public class WorkingHourApi {
 		UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
 		User user = userSecurityContext.getUser();
 		workingHour.setUser(user);
+		logger.log("Adding to database: " + workingHour);
 		hourService.addWorkingHour(workingHour);
 		return Response.ok("Working hour added to user: " + user.getName() + "with start: " + workingHour.getStarting()
 				+ " with duration: " + workingHour.getDuration()).build();

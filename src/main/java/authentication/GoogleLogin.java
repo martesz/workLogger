@@ -13,10 +13,12 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 
+import entities.DebugLogger;
 import entities.User;
 
 @Stateless
 public class GoogleLogin {
+	public static final DebugLogger logger = new DebugLogger(GoogleLogin.class.getName());
 	public static final String ISSUER = "https://accounts.google.com";
 
 	public static final String SERVICE_CLIENT_ID = "390153392979-9gaqsfen0f7kdqc3kh07b4uvm2fn8loe.apps.googleusercontent.com";
@@ -24,6 +26,11 @@ public class GoogleLogin {
 	public User authenticateAndroid(String googleIdToken) {
         GoogleIdTokenVerifier verifier = createVerifier(SERVICE_CLIENT_ID, ISSUER);
         User user = authenticate(verifier, googleIdToken);
+		if (user == null) {
+			logger.log("User failed to login.");
+		} else {
+			logger.log("User succesfully logged in: " + user);
+		}
         return user;
     }
 	
