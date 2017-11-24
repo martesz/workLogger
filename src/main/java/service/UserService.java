@@ -20,7 +20,7 @@ public class UserService {
 	}
 
 	public User registerOrLoginUser(User user) {
-		User existing = userDao.getUserByGoogleId(user.getGoogleId());
+		User existing = loginUser(user.getGoogleId());
 		if (existing == null) {
 			user.setLevel(Level.EMPLOYEE);
 			logger.log("Adding new user to database: " + user);
@@ -30,6 +30,10 @@ public class UserService {
 			logger.log("User already existed, returning: " + existing);
 			return existing;
 		}
+	}
+
+	public User loginUser(final String googleId) {
+		return userDao.getUserByGoogleId(googleId);
 	}
 
 	public Level getLevelOfUser(String googleId) {
