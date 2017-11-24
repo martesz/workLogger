@@ -46,24 +46,18 @@ public class WorkingHourApi {
 		hourService.addWorkingHour(workingHour);
 		return Response.ok(workingHour).build();
 	}
-	
-	@Secured
+
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateWorkingHour(@Context ContainerRequestContext securityContext, WorkingHour workingHour) {
-		UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
-		User user = userSecurityContext.getUser();
-		hourService.updateWorkingHour(workingHour);
-		return Response.ok("Working hour updated to user: " + user.getName() + "with start: " + workingHour.getStarting()
-		+ " with duration: " + workingHour.getDuration()).build();
-	}
-	
 	@Secured
+	public Response updateWorkingHour(WorkingHour workingHour) {
+		hourService.updateWorkingHour(workingHour);
+		return Response.ok().build();
+	}
+
 	@DELETE
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
 	@Path("/{id}")
+	@Secured
 	public Response removeWorkingHour(@PathParam(value = "id") long id) {
 		WorkingHour workingHour = hourService.getWorkingHourById(Long.valueOf(id));
 		if (workingHour == null) {
@@ -76,8 +70,8 @@ public class WorkingHourApi {
 	}
 
 	@GET
-	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
 	public Response getWorkingHoursByUser(@Context ContainerRequestContext securityContext) {
 		UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
 		User user = userSecurityContext.getUser();
@@ -89,9 +83,9 @@ public class WorkingHourApi {
 	}
 
 	@GET
-	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/issues")
+	@Secured
 	public Response getIssues() {
 		List<Issue> issues = hourService.getIssues();
 		if (issues == null) {

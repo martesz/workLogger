@@ -22,7 +22,7 @@ public class WorkingHour implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@Temporal(value = TemporalType.DATE)
+	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date starting;
 	private long duration;
 	private User user;
