@@ -42,8 +42,7 @@ public class WorkingHourApi {
 		workingHour.setUser(user);
 		logger.log("Adding to database: " + workingHour);
 		hourService.addWorkingHour(workingHour);
-		return Response.ok("Working hour added to user: " + user.getName() + "with start: " + workingHour.getStarting()
-				+ " with duration: " + workingHour.getDuration()).build();
+		return Response.ok(workingHour).build();
 	}
 	
 	@Secured
