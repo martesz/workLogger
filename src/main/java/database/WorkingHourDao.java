@@ -25,7 +25,10 @@ public class WorkingHourDao {
 	}
 
 	public void removeWorkingHour(WorkingHour workingHour) {
-		em.remove(workingHour);
+		final WorkingHour databaseWorkingHour = em.find(WorkingHour.class, workingHour.getId());
+		if (databaseWorkingHour != null) {
+			em.remove(databaseWorkingHour);
+		}
 	}
 
 	public List<WorkingHour> getWorkingHours(User user) {
