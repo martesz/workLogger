@@ -34,12 +34,6 @@
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>
 			<version>1.23.0</version>
-			<exclusions>
-		        <exclusion>
-		            <groupId>com.fasterxml.jackson.core</groupId>
-		            <artifactId>jackson-core</artifactId>
-		        </exclusion>
-		    </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.google.http-client</groupId>
@@ -50,12 +44,6 @@
 		    <groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-json-jackson</artifactId>
 			<version>2.26</version>
-			<exclusions>
-		        <exclusion>
-		            <groupId>com.fasterxml.jackson.core</groupId>
-		            <artifactId>jackson-core</artifactId>
-		        </exclusion>
-		    </exclusions>
 		</dependency>
 	</dependencies>
 	<build>
