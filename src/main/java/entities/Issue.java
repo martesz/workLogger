@@ -57,4 +57,9 @@ public class Issue implements Serializable {
 		return id;
 	}
 
+	@Override
+	public String toString() {
+		return "Issue [id=" + id + ", name=" + name + ", description=" + description + ", project=" + project + "]";
+	}
+
 }

@@ -61,4 +61,9 @@ public class User implements Serializable {
 		this.level = Level.valueOf(level);
 	}
 
+	@Override
+	public String toString() {
+		return "User [googleId=" + googleId + ", name=" + name + ", level=" + level + "]";
+	}
+
 }

@@ -70,4 +70,10 @@ public class WorkingHour implements Serializable {
 		return id;
 	}
 
+	@Override
+	public String toString() {
+		return "WorkingHour [id=" + id + ", starting=" + starting + ", duration=" + duration + ", user=" + user
+				+ ", issue=" + issue + "]";
+	}
+
 }
