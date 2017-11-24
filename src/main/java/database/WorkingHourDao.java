@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import entities.Issue;
 import entities.User;
 import entities.WorkingHour;
 
@@ -37,4 +38,15 @@ public class WorkingHourDao {
 		List<WorkingHour> resultList = query.getResultList();
 		return resultList;
 	}
+
+	public WorkingHour getWorkingHourById(long id) {
+		return em.find(WorkingHour.class, id);
+	}
+
+	public List<Issue> getIssues() {
+		TypedQuery<Issue> query = em.createQuery("SELECT i FROM Issue i", Issue.class);
+		List<Issue> resultList = query.getResultList();
+		return resultList;
+	}
+
 }

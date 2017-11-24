@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import database.WorkingHourDao;
+import entities.Issue;
 import entities.User;
 import entities.WorkingHour;
 
@@ -29,5 +30,13 @@ public class WorkingHourService {
 
 	public List<WorkingHour> getWorkingHours(User user) {
 		return hourDao.getWorkingHours(user);
+	}
+
+	public WorkingHour getWorkingHourById(long id) {
+		return hourDao.getWorkingHourById(id);
+	}
+
+	public List<Issue> getIssues() {
+		return hourDao.getIssues();
 	}
 }
