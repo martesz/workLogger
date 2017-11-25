@@ -1,9 +1,13 @@
 package rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotAllowedException;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -56,4 +60,24 @@ public class Authentication {
 			return Response.ok("User level not updated, needs admin level").build();
 		}
 	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/all")
+	@Secured
+	public Response getUsers(@Context ContainerRequestContext securityContext) {
+		final UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
+		final User requester = userSecurityContext.getUser();
+		final Level levelOfRequester = userService.getLevelOfUser(requester.getGoogleId());
+		if (levelOfRequester != Level.ADMIN && levelOfRequester != Level.PROJECT_LEADER) {
+			logger.log("Users cannot be returned, because requester level is not project leader or admin: " + requester);
+			throw new NotAllowedException(Response.ok("Requester is not project leader or admin").build());
+		}
+		List<User> users = userService.getUsers();
+		if (users == null) {
+			users = new ArrayList<>();
+		}
+		return Response.ok(users).build();
+	}
+
 }

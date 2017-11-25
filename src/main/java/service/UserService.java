@@ -1,5 +1,7 @@
 package service;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -44,4 +46,9 @@ public class UserService {
 	public void updateLevel(String googleId, String level) {
 		userDao.updateLevel(googleId, level);
 	}
+
+	public List<User> getUsers() {
+		return userDao.getUsers();
+	}
+
 }

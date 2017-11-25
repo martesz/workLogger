@@ -1,8 +1,11 @@
 package database;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import entities.User;
 
@@ -24,6 +27,12 @@ public class UserDao {
 	public void updateLevel(String googleId, String level) {
 		User user = em.find(User.class, googleId);
 		user.setLevelFromString(level);
+	}
+
+	public List<User> getUsers() {
+		TypedQuery<User> query = em.createQuery("SELECT u FROM Users u", User.class);
+		List<User> resultList = query.getResultList();
+		return resultList;
 	}
 
 }

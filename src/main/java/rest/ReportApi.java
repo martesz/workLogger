@@ -1,33 +1,72 @@
 package rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.EJB;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import authentication.Secured;
-import entities.Project;
+import authentication.UserSecurityContext;
+import entities.DebugLogger;
+import entities.Report;
+import entities.User;
+import entities.WorkingHour;
 import service.ReportService;
 import service.WorkingHourService;
 
 @Path("/report")
 public class ReportApi {
+	public static final DebugLogger logger = new DebugLogger(WorkingHour.class.getName());
 
 	@EJB
 	private ReportService reportService;
 	@EJB
 	private WorkingHourService workingHourService;
 
-	@GET
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Secured
-	@Path("/{projectName}")
-	public Response getReportByProjectName(@PathParam(value = "projectName") String projectName) {
-		Project project = reportService.getProjectReport(projectName);
-		return Response.ok(project).build();
+	public Response addReport(@Context ContainerRequestContext securityContext, Report report) {
+		final UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
+		final User user = userSecurityContext.getUser();
+		report.setOwner(user);
+		logger.log("Adding to database: " + report);
+		reportService.addReport(report);
+		return Response.ok(report).build();
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{reportId}")
+	@Secured
+	public Response getReportById(@PathParam(value = "reportId") long reportId) {
+		final Report report = reportService.getReportById(reportId);
+		return Response.ok(report).build();
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/all")
+	@Secured
+	public Response getReportsByUser(@Context ContainerRequestContext securityContext) {
+		final UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
+		final User owner = userSecurityContext.getUser();
+		List<Report> reports = reportService.getReports(owner);
+		if (reports == null) {
+			reports = new ArrayList<>();
+		}
+		return Response.ok(reports).build();
 	}
 
 }

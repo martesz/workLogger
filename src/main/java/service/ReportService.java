@@ -1,18 +1,30 @@
 package service;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import database.ProjectDao;
-import entities.Project;
+import database.ReportDao;
+import entities.Report;
+import entities.User;
 
 @Stateless
 public class ReportService {
 
 	@EJB
-	ProjectDao projectDao;
-	
-	public Project getProjectReport(String projectName) {
-		return projectDao.getProjectByName(projectName);
+	ReportDao reportDao;
+
+	public List<Report> getReports(User owner) {
+		return reportDao.getReports(owner);
 	}
+
+	public Report getReportById(long id) {
+		return reportDao.getReportById(id);
+	}
+
+	public void addReport(Report report) {
+		reportDao.insertReport(report);
+	}
+
 }
