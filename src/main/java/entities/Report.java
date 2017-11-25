@@ -31,11 +31,21 @@ public class Report implements Serializable {
 	private ReportType reportType;
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date startDate;
-	
+
 	public enum ReportType {
-		DAILY, WEEKLY, MONTHLY
+		DAILY(1), WEEKLY(7), MONTHLY(30);
+
+		private int lengthDays;
+
+		private ReportType(int lengthDays) {
+			this.lengthDays = lengthDays;
+		}
+
+		public int getLengthDays() {
+			return lengthDays;
+		}
 	}
-	
+
 	public Report() {
 		super();
 	}

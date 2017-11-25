@@ -32,6 +32,12 @@ public class WorkingHourDao {
 		}
 	}
 
+	public List<WorkingHour> getAllWorkingHours() {
+		TypedQuery<WorkingHour> query = em.createQuery("SELECT w FROM WorkingHour w", WorkingHour.class);
+		List<WorkingHour> resultList = query.getResultList();
+		return resultList;
+	}
+
 	public List<WorkingHour> getWorkingHours(User user) {
 		TypedQuery<WorkingHour> query = em.createQuery("SELECT w FROM WorkingHour w WHERE w.user =:user", WorkingHour.class);
 		query.setParameter("user", user);

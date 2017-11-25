@@ -69,4 +69,19 @@ public class ReportApi {
 		return Response.ok(reports).build();
 	}
 
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/sum/{reportId}")
+	@Secured
+	public Response getWorkedHoursForReport(@PathParam(value = "reportId") long reportId) {
+		final Report report = reportService.getReportById(reportId);
+		List<WorkingHour> workingHours = reportService.getWorkingHoursForReport(report);
+		long sumTime = 0;
+		if (workingHours != null) {
+			for (WorkingHour hour: workingHours) {
+				sumTime += hour.getDuration();
+			}
+		}
+		return Response.ok(sumTime).build();
+	}
 }

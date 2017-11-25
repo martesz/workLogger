@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import database.ReportDao;
 import entities.Report;
 import entities.User;
+import entities.WorkingHour;
 
 @Stateless
 public class ReportService {
@@ -25,6 +26,10 @@ public class ReportService {
 
 	public void addReport(Report report) {
 		reportDao.insertReport(report);
+	}
+
+	public List<WorkingHour> getWorkingHoursForReport(Report report) {
+		return reportDao.getWorkingHoursForReport(report);
 	}
 
 }
