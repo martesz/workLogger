@@ -30,7 +30,7 @@ public class UserDao {
 	}
 
 	public List<User> getUsers() {
-		TypedQuery<User> query = em.createQuery("SELECT u FROM Users u", User.class);
+		TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
 		List<User> resultList = query.getResultList();
 		return resultList;
 	}
