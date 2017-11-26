@@ -27,6 +27,10 @@ public class ReportDao {
 		em.persist(report);
 	}
 
+	public void updateReport(Report report) {
+		em.merge(report);
+	}
+
 	public void removeReport(Report report) {
 		final Report databasereport = em.find(Report.class, report.getId());
 		if (databasereport != null) {
@@ -37,6 +41,12 @@ public class ReportDao {
 	public List<Report> getReports(final User owner) {
 		TypedQuery<Report> query = em.createQuery("SELECT r FROM Report r WHERE r.owner =:owner", Report.class);
 		query.setParameter("owner", owner);
+		List<Report> resultList = query.getResultList();
+		return resultList;
+	}
+
+	public List<Report> getAllReports() {
+		TypedQuery<Report> query = em.createQuery("SELECT r FROM Report r", Report.class);
 		List<Report> resultList = query.getResultList();
 		return resultList;
 	}

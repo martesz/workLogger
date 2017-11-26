@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -21,6 +23,7 @@ import authentication.UserSecurityContext;
 import entities.DebugLogger;
 import entities.Report;
 import entities.User;
+import entities.User.Level;
 import entities.WorkingHour;
 import service.ReportService;
 import service.WorkingHourService;
@@ -47,6 +50,28 @@ public class ReportApi {
 		return Response.ok(report).build();
 	}
 
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Secured
+	public Response updateReport(Report report) {
+		reportService.updateReport(report);
+		return Response.ok().build();
+	}
+
+	@DELETE
+	@Path("/{id}")
+	@Secured
+	public Response removeReport(@PathParam(value = "id") long id) {
+		Report report = reportService.getReportById(Long.valueOf(id));
+		if (report == null) {
+			logger.log("Not removing from database, because Report not exists with id: " + id);
+			return Response.notModified().build();
+		}
+		logger.log("Removing from database: " + report);
+		reportService.removeReport(report);
+		return Response.ok().build();
+	}
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{reportId}")
@@ -63,7 +88,12 @@ public class ReportApi {
 	public Response getReportsByUser(@Context ContainerRequestContext securityContext) {
 		final UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
 		final User owner = userSecurityContext.getUser();
-		List<Report> reports = reportService.getReports(owner);
+		List<Report> reports;
+		if (owner.getLevel() == Level.ADMIN) {
+			reports = reportService.getAllReports();
+		} else {
+			reports = reportService.getReports(owner);
+		}
 		if (reports == null) {
 			reports = new ArrayList<>();
 		}

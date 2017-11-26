@@ -5,10 +5,14 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import database.ReportDao;
 import database.UserDao;
+import database.WorkingHourDao;
 import entities.DebugLogger;
+import entities.Report;
 import entities.User;
 import entities.User.Level;
+import entities.WorkingHour;
 
 @Stateless
 public class UserService {
@@ -16,6 +20,10 @@ public class UserService {
 
 	@EJB
 	UserDao userDao;
+	@EJB
+	WorkingHourDao hourDao;
+	@EJB
+	ReportDao reportDao;
 
 	public User getUserByGoogleId(String googleId) {
 		return userDao.getUserByGoogleId(googleId);
@@ -60,6 +68,22 @@ public class UserService {
 	}
 
 	public void removeUser(final User user) {
+		final User databaseUser = userDao.getUserByGoogleId(user.getGoogleId());
+		if (databaseUser == null) {
+			return;
+		}
+		final List<WorkingHour> workingHours = hourDao.getWorkingHours(databaseUser);
+		if (workingHours != null) {
+			for (final WorkingHour workingHour : workingHours) {
+				hourDao.removeWorkingHour(workingHour);
+			}
+		}
+		final List<Report> reports = reportDao.getReports(databaseUser);
+		if (reports != null) {
+			for (final Report report : reports) {
+				reportDao.removeReport(report);
+			}
+		}
 		userDao.removeUser(user);
 	}
 

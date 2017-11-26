@@ -39,11 +39,8 @@ public class UserDao {
 		em.merge(user);
 	}
 
-	public void removeUser(final User user) {
-		final User databaseUser = em.find(User.class, user.getGoogleId());
-		if (databaseUser != null) {
-			em.remove(databaseUser);
-		}
+	public void removeUser(final User databaseUser) {
+		em.remove(databaseUser);
 	}
 
 }

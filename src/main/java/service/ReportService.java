@@ -24,12 +24,24 @@ public class ReportService {
 		return reportDao.getReports(owner);
 	}
 
+	public List<Report> getAllReports() {
+		return reportDao.getAllReports();
+	}
+
 	public Report getReportById(long id) {
 		return reportDao.getReportById(id);
 	}
 
 	public void addReport(Report report) {
 		reportDao.insertReport(report);
+	}
+
+	public void updateReport(Report report) {
+		reportDao.updateReport(report);
+	}
+
+	public void removeReport(Report report) {
+		reportDao.removeReport(report);
 	}
 
 	public List<WorkingHour> getWorkingHoursForReport(Report report) {

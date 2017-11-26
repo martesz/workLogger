@@ -48,6 +48,12 @@ public class Init {
 		projectLeaderUser.setName("Imre Project Leader");
 		userService.addUser(projectLeaderUser);
 
+		final User deletableUser = new User();
+		deletableUser.setGoogleId("000000000");
+		deletableUser.setLevel(Level.EMPLOYEE);
+		deletableUser.setName("Deletable");
+		userService.addUser(deletableUser);
+
 		logger.log("users initialized successfully.");
 		logger.log("initializing projects...");
 
@@ -130,6 +136,13 @@ public class Init {
 		workingHour5.setStarting(createStartingDate("2017-11-25 07:30"));
 		workingHour5.setDuration(createDuration(8, 15, 40));
 		workingHourService.addWorkingHour(workingHour5);
+
+		final WorkingHour deletableWorkingHour = new WorkingHour();
+		deletableWorkingHour.setUser(deletableUser);
+		deletableWorkingHour.setIssue(issue4);
+		deletableWorkingHour.setStarting(createStartingDate("2017-11-20 07:30"));
+		deletableWorkingHour.setDuration(createDuration(8, 0, 0));
+		workingHourService.addWorkingHour(deletableWorkingHour);
 
 		logger.log("working hours initialized successfully.");
 		logger.log("finished initialization");
