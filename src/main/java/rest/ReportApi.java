@@ -10,6 +10,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -63,6 +64,16 @@ public class ReportApi {
 		final UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
 		final User owner = userSecurityContext.getUser();
 		List<Report> reports = reportService.getReports(owner);
+		if (reports == null) {
+			reports = new ArrayList<>();
+		}
+		return Response.ok(reports).build();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getReportsByUserId(@QueryParam(value="userId") String userId) {
+		List<Report> reports = reportService.getReports(userId);
 		if (reports == null) {
 			reports = new ArrayList<>();
 		}

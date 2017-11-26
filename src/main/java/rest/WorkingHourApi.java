@@ -1,6 +1,7 @@
 package rest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -13,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -78,6 +80,17 @@ public class WorkingHourApi {
 		List<WorkingHour> workingHours = hourService.getWorkingHours(user);
 		if (workingHours == null) {
 			workingHours = new ArrayList<>();
+		}
+		return Response.ok(workingHours).build();
+	}
+
+	@GET
+	@Path("/byId")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getWorkingHoursByUserId(@QueryParam(value = "userId") String userId) {
+		List<WorkingHour> workingHours = hourService.getWorkingHourByUserId(userId);
+		if (workingHours == null) {
+			workingHours = Collections.emptyList();
 		}
 		return Response.ok(workingHours).build();
 	}
