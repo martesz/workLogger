@@ -7,18 +7,21 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import entities.DebugLogger;
 import entities.Issue;
 import entities.User;
 import entities.WorkingHour;
 
 @Stateless
 public class WorkingHourDao {
-
+	public static final DebugLogger logger = new DebugLogger(ReportDao.class.getName());
+	
 	@PersistenceContext(unitName = "workLoggerPu")
 	EntityManager em;
 	
 	public void insertWorkingHour(WorkingHour workingHour) {
 		em.persist(workingHour);
+		logger.log("Added working hour to database: " + workingHour);
 	}
 
 	public void updateWorkingHour(WorkingHour workingHour) {

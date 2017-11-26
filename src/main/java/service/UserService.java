@@ -25,8 +25,7 @@ public class UserService {
 		User existing = loginUser(user.getGoogleId());
 		if (existing == null) {
 			user.setLevel(Level.EMPLOYEE);
-			logger.log("Adding new user to database: " + user);
-			userDao.insert(user);
+			addUser(user);
 			return user;
 		} else {
 			logger.log("User already existed, returning: " + existing);
@@ -36,6 +35,11 @@ public class UserService {
 
 	public User loginUser(final String googleId) {
 		return userDao.getUserByGoogleId(googleId);
+	}
+
+	public void addUser(final User user) {
+		logger.log("Adding user to database: " + user);
+		userDao.insert(user);
 	}
 
 	public Level getLevelOfUser(String googleId) {

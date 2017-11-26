@@ -21,7 +21,7 @@ public class UserDao {
 	}
 
 	public void insert(User user) {
-			em.persist(user);
+		em.persist(user);
 	}
 
 	public void updateLevel(String googleId, String level) {
