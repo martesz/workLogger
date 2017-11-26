@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import entities.DebugLogger;
 import entities.Report;
 import entities.Report.ReportType;
 import entities.User;
@@ -16,6 +17,7 @@ import entities.WorkingHour;
 
 @Stateless
 public class ReportDao {
+	public static final DebugLogger logger = new DebugLogger(ReportDao.class.getName());
 	private static final String ALL_USERS = "allUser";
 
 	@PersistenceContext(unitName = "workLoggerPu")
@@ -46,6 +48,7 @@ public class ReportDao {
 	public List<WorkingHour> getWorkingHoursForReport(Report report) {
 		final Date startDate = report.getStartDate();
 		final Date endDate = getEndDate(report.getStartDate(), report.getReportType());
+		logger.log("Selecting WorkingHours from date " + startDate + " to " + endDate);
 
 		final TypedQuery<WorkingHour> query;
 		if (report.getGoogleId().equals(ALL_USERS)) {
@@ -70,7 +73,7 @@ public class ReportDao {
 		final Calendar calendar = Calendar.getInstance();
 		calendar.setTime(startDate);
 		final int length = reportType.getLengthDays();
-		calendar.add(Calendar.HOUR_OF_DAY, length);
+		calendar.add(Calendar.DAY_OF_MONTH, length);
 		return calendar.getTime();
 	}
 
