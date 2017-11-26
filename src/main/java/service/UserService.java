@@ -55,4 +55,12 @@ public class UserService {
 		return userDao.getUsers();
 	}
 
+	public void updateUser(final User user) {
+		userDao.updateUser(user);
+	}
+
+	public void removeUser(final User user) {
+		userDao.removeUser(user);
+	}
+
 }

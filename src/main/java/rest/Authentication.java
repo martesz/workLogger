@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotAllowedException;
 import javax.ws.rs.PUT;
@@ -43,22 +44,43 @@ public class Authentication {
 	}
 
 	@PUT
-	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Secured
-	@Path("/{googleId}")
-	public Response setUserLevel(@Context ContainerRequestContext securityContext, @PathParam(value = "googleId") String googleId, String level) {
+	public Response updateUser(@Context ContainerRequestContext securityContext, User user) {
 		UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
 		User issuer = userSecurityContext.getUser();
 		Level levelOfIssuer = userService.getLevelOfUser(issuer.getGoogleId());
 		if (levelOfIssuer == Level.ADMIN) {
-			userService.updateLevel(googleId, level);
-			logger.log("User with googleId " + googleId + " updated to level " + level + " by issuer " + issuer);
-			return Response.ok("User level updated to " + level).build();
+			userService.updateUser(user);
+			logger.log("User " + user + " updated by issuer " + issuer);
+			return Response.ok().build();
 		} else {
-			logger.log("User with googleId " + googleId + " cannot be updated to level " + level + ", because issuer level is not admin: " + issuer);
-			return Response.ok("User level not updated, needs admin level").build();
+			logger.log("User " + user + " cannot be updated, because issuer level is not admin: " + issuer);
+			return Response.notModified().build();
 		}
+	}
+
+	@DELETE
+	@Path("/{googleId}")
+	@Secured
+	public Response removeUser(@Context ContainerRequestContext securityContext, @PathParam(value = "googleId") String googleId) {
+		final UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
+		final User issuer = userSecurityContext.getUser();
+		final Level levelOfIssuer = userService.getLevelOfUser(issuer.getGoogleId());
+		if (levelOfIssuer == Level.ADMIN) {
+			final User user = userService.getUserByGoogleId(googleId);
+			if (user == null) {
+				logger.log("Not removing from database, because User not exists with googleId: " + googleId);
+				return Response.notModified().build();
+			}
+			logger.log("Removing from database: " + user);
+			userService.removeUser(user);
+			return Response.ok().build();
+		} else {
+			logger.log("User with googleId " + googleId + " cannot be deleted, because issuer level is not admin: " + issuer);
+			return Response.notModified().build();
+		}
+		
 	}
 
 	@GET

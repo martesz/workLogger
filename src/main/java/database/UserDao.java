@@ -35,4 +35,15 @@ public class UserDao {
 		return resultList;
 	}
 
+	public void updateUser(final User user) {
+		em.merge(user);
+	}
+
+	public void removeUser(final User user) {
+		final User databaseUser = em.find(User.class, user.getGoogleId());
+		if (databaseUser != null) {
+			em.remove(databaseUser);
+		}
+	}
+
 }
