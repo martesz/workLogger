@@ -26,12 +26,15 @@ import entities.User;
 import entities.User.Level;
 import entities.WorkingHour;
 import service.ReportService;
+import service.UserService;
 import service.WorkingHourService;
 
 @Path("/report")
 public class ReportApi {
 	public static final DebugLogger logger = new DebugLogger(WorkingHour.class.getName());
 
+	@EJB
+	private UserService userService;
 	@EJB
 	private ReportService reportService;
 	@EJB
@@ -87,9 +90,12 @@ public class ReportApi {
 	@Secured
 	public Response getReportsByUser(@Context ContainerRequestContext securityContext) {
 		final UserSecurityContext userSecurityContext = (UserSecurityContext) securityContext.getSecurityContext();
-		final User owner = userSecurityContext.getUser();
+		final User user = userSecurityContext.getUser();
+		final User owner = userService.getUserByGoogleId(user.getGoogleId());
+		logger.log("getting reports for database user " + owner);
 		List<Report> reports;
 		if (owner.getLevel() == Level.ADMIN) {
+			logger.log("user is admin, getting all reports");
 			reports = reportService.getAllReports();
 		} else {
 			reports = reportService.getReports(owner);

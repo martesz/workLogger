@@ -58,7 +58,7 @@ public class ReportDao {
 	public List<WorkingHour> getWorkingHoursForReport(Report report) {
 		final Date startDate = report.getStartDate();
 		final Date endDate = getEndDate(report.getStartDate(), report.getReportType());
-		logger.log("Selecting WorkingHours from date " + startDate + " to " + endDate);
+		logger.log("Selecting WorkingHours from date " + startDate + " to " + endDate + " for report " + report);
 
 		final TypedQuery<WorkingHour> query;
 		if (report.getGoogleId().equals(ALL_USERS)) {
